@@ -134,4 +134,5 @@ if __name__ == "__main__":
             # Mensaje de éxito.
             print(f"Archivo generado correctamente en: {ruta_salida.resolve()}")
         except Exception as e:
+            # Manejo de errores al procesar los archivos.
             print(f"Error al procesar los archivos: {e}")
