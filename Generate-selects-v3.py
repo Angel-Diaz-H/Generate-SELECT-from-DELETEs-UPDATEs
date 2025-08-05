@@ -122,11 +122,16 @@ if __name__ == "__main__":
         try:
             # Lee el archivo de entrada y genera los SELECTs de respaldo.
             contenido = ruta_entrada.read_text(encoding="utf-8")
+            # Genera los SELECTs de respaldo agrupados. Retorna una lista de SELECTs.
             selects = generar_selects_de_respaldo(contenido)
+            # Abre el archivo de salida y escribe los SELECTs generados.
             with ruta_salida.open("w", encoding="utf-8") as f:
+                # Escribe el encabezado en el archivo de salida.
                 f.write("-- SELECTS DE RESPALDO AGRUPADOS --\n")
+                # Agrega los SELECTs generados al archivo de salida.
                 for sel in selects:
                     f.write(sel + "\n")
+            # Mensaje de éxito.
             print(f"Archivo generado correctamente en: {ruta_salida.resolve()}")
         except Exception as e:
             print(f"Error al procesar los archivos: {e}")

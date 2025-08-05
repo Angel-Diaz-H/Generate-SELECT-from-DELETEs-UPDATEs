@@ -1,0 +1,22 @@
+Realizado:
+* Soportar condiciones más complejas (por ejemplo, IS NULL, NOT IN, etc.)
+
+Pendientes:
+* Validar que el archivo no esté vacío
+* Mostrar advertencias si no se generan SELECTs
+* Capturar errores de lectura/escritura con try/except
+* Hacer que respalde tablas completas.
+* Si contiene un UPDATE o DELETE sin Where o claúsulas que lo filtren, ignore completamente las demás sentencias que sí utilice Where.
+
+Estructura Generate-Select:
+I. Entrada.
+1. Recibir archivo.
+2. Validaciones:
+    2.1. Que exista el archivo.
+    2.2. Que el archivo no esté vacío.
+
+II. Procesamiento.
+3. Creación de ruta salida.
+4. Mandar a llamar la función principal.
+
+III. Salida.
