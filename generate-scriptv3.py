@@ -1,7 +1,9 @@
+# Librerías.
 import re
 from pathlib import Path
 from collections import defaultdict, OrderedDict
 
+# Función para formatear y generar selects agrupados por tabla y columna.
 def formatear_y_generar_selects(texto_sql: str):
     texto_limpio = re.sub(r"--.*", "", texto_sql)
     texto_unido = " ".join(line.strip() for line in texto_limpio.splitlines() if line.strip())
@@ -80,15 +82,22 @@ if __name__ == "__main__":
     ruta_entrada = Path("entrada.sql")
     ruta_salida = Path("script-selects.txt")
 
+    # Validación de archivo.
     if not ruta_entrada.exists():
         print("⏸️ Archivo de entrada no encontrado.")
     else:
+        # Lectura de archivo.
         contenido = ruta_entrada.read_text(encoding="utf-8")
+        # Generación de selects agrupados. Retorna la lista de selects.
         selects = formatear_y_generar_selects(contenido)
 
+        # Abre el archivo de salida.
         with ruta_salida.open("w", encoding="utf-8") as f:
+            # Encabezado.
             f.write("-- SELECTS DE RESPALDO AGRUPADOS --\n")
+            # Agrega cada select en el archivo de salida.
             for sel in selects:
                 f.write(sel + "\n")
 
-        print(f"✅ Archivo generado correctamente en: {ruta_salida.resolve()}")
+        # Mensaje de éxito.
+        print("Archivo generado correctamente.")
