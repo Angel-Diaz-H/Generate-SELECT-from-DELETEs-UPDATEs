@@ -9,11 +9,16 @@ def generar_selects_de_respaldo(texto_sql: str):
     texto_limpio = re.sub(r"--.*", "", texto_sql)
     texto_limpio = re.sub(r"/\*.*?\*/", "", texto_limpio, flags=re.DOTALL)
 
+    '''Quitamos la agrupación y el criterio de delete y update, por punto y coma.
     # Une todas las líneas en una sola para facilitar el procesamiento con expresiones regulares.
     texto_unido = " ".join(line.strip() for line in texto_limpio.splitlines() if line.strip())
 
     # Divide el texto en sentencias UPDATE y DELETE usando lookahead para mantener el delimitador.
     sentencias = re.split(r"\b(?=delete|update)\b", texto_unido, flags=re.IGNORECASE)
+    '''
+
+    # Divide el texto en sentencias usando punto y coma como delimitador
+    sentencias = [x.strip() for x in re.split(r";", texto_limpio) if x.strip()]
 
     # Estructuras para agrupar condiciones simples por tabla y columna.
     agrupados = defaultdict(lambda: defaultdict(set))
@@ -26,7 +31,7 @@ def generar_selects_de_respaldo(texto_sql: str):
             continue
 
         # Ignora sentencias irrelevantes o de control de transacciones.
-        if sentencia.lower().startswith(("set ", "commit", "rollback")):
+        if not sentencia or sentencia.lower().startswith(("set ", "commit", "rollback", "begin", "start transaction", "use ", "create ", "drop ", "alter ", "grant ", "revoke")):
             continue
 
         # Extrae nombre de la tabla y condiciones del WHERE para UPDATE y DELETE.
@@ -136,3 +141,4 @@ if __name__ == "__main__":
         except Exception as e:
             # Manejo de errores al procesar los archivos.
             print(f"Error al procesar los archivos: {e}")
+
